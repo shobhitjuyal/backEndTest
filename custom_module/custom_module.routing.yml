@@ -1,0 +1,8 @@
+custom_module.detail:
+  path: "/page-json/{api}/{nid}"
+  defaults:
+    _controller: '\Drupal\custom_module\Controller\CustomNodeDetail::content'
+    _title: "Node JSON view"
+    _format: "json"
+  requirements:
+    _access: "TRUE"

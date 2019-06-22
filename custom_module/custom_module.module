@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Code file custom_module module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function custom_module_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state) {
+  $form['site_information']['siteapikey'] = [
+    '#type' => 'textfield',
+    '#title' => 'Site API Key',
+    '#attributes' => [
+      "placeholder" => 'No API Key yet',
+    ],
+    '#default_value' =>
+    \Drupal::config('system.site')->get('siteapikey') ??
+    'No API Key yet',
+  ];
+  $form['actions']['submit']['#value'] = t("Update Configuration");
+  $form['actions']['submit']['#submit'][] = '_custom_module_sytem_site_form_submit';
+}
+
+/**
+ * Custom form submit handler.
+ *
+ * @param array $form
+ *   Form reference.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Formstate object.
+ */
+function _custom_module_sytem_site_form_submit(array &$form, FormStateInterface $form_state) {
+  \Drupal::configFactory()->getEditable('system.site')
+    ->set('siteapikey', $form_state->getValue('siteapikey'))
+    ->save();
+  drupal_set_message(t("Site API Key has been saved with %val.", [
+    "%val" => $form_state->getValue('siteapikey'),
+  ]));
+}

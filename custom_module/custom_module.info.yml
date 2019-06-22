@@ -1,0 +1,5 @@
+name: Custom Module
+description: 'Custom module for backend test.'
+core: 8.x
+package: Custom
+type: module
